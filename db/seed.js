@@ -2,6 +2,7 @@ const client = require('./index')
 const { dropTables, createTables } = require('./initdb')
 const { createUser } = require('./users')
 const { createInquiry } = require('./inquiries')
+const { createInquiryIssue } = require('./inquiryissues') 
 
 const parrysArvada = {
     email_address: 'Teamarvada@parryspizza.com',
@@ -11,13 +12,27 @@ const parrysArvada = {
 }
 const testInquiry = {
     creator: 1,
-    issue: 'Missing'
+    issue: 1,
 }
+const issues = [
+    {
+        issue: 'Missing'
+    },
+    {
+        issue: 'Miss Pick'
+    },
+    {
+        issue: 'Damaged'
+    }
+
+]
 const rebuildDB = async () => {
     await dropTables()
     await createTables()
     await createUser(parrysArvada)
+    await Promise.all(issues.map(issue => createInquiryIssue(issue)))
     await createInquiry(testInquiry)
+    
 }
 
 client.connect();

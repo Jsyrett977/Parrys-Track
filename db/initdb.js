@@ -5,6 +5,7 @@ const dropTables = async () => {
         console.log('Dropping Tables')
         await client.query(`
             DROP TABLE IF EXISTS inquiries;
+            DROP TABLE IF EXISTS inquiry_issues;
             DROP TABLE IF EXISTS users;
         `)
     } catch (error){
@@ -23,10 +24,14 @@ const createTables = async () => {
                 phone_number VARCHAR(255),
                 customer_number VARCHAR(255) UNIQUE NOT NULL
             );
+            CREATE TABLE inquiry_issues (
+                id SERIAL PRIMARY KEY,
+                issue_type VARCHAR(255) UNIQUE NOT NULL
+            );
             CREATE TABLE inquiries (
                 id SERIAL PRIMARY KEY,
                 creator INTEGER REFERENCES users(id) NOT NULL,
-                issue VARCHAR(255) NOT NULL
+                issue INTEGER REFERENCES inquiry_issues(id) NOT NULL
             );
         `);
     } catch (error){
