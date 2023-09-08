@@ -15,7 +15,20 @@ const createUser = async ( {email_address, password, phone_number, customer_numb
         console.error('Error creating user', error)
     }
 }
-
+const getUserByEmail = async (email_address) => {
+    try{
+        const { rows: [user] } = await client.query(`
+            SELECT *
+            FROM users
+            WHERE email_address = $1
+            ;
+        `, [email_address])
+        return user;
+    } catch(error){
+        console.error('Error getting user by Email')
+    }
+}
 module.exports = {
-    createUser
+    createUser,
+    getUserByEmail
 }
