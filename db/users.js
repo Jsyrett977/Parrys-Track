@@ -28,7 +28,21 @@ const getUserByEmail = async (email_address) => {
         console.error('Error getting user by Email')
     }
 }
+const verifyUser = async (email_address, password) => {
+    try{
+        const {rows: [userPassword] } = await client.query(`
+            SELECT password
+            FROM users
+            WHERE email_address = $1
+            ;
+        `, [email_address])
+        return await bcrypt.compare(password, userPassword.password)
+    } catch(error){
+        console.error('login was not successful')
+    }
+}
 module.exports = {
     createUser,
-    getUserByEmail
+    getUserByEmail,
+    verifyUser
 }
