@@ -13,6 +13,13 @@ const createInquiry = async ({ creator, issue }) => {
         console.error('Error creating inquiry', error)
     }
 }
+const getAllInquiries = async () => {
+    const { rows:  allInquries } = await client.query(`
+        SELECT *
+        FROM inquiries
+        ;
+    `)
+}
 module.exports = {
     createInquiry
 }
