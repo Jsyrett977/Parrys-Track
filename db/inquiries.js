@@ -14,11 +14,29 @@ const createInquiry = async ({ creator, issue }) => {
     }
 }
 const getAllInquiries = async () => {
+    try{
     const { rows:  allInquries } = await client.query(`
         SELECT *
         FROM inquiries
         ;
     `)
+    return allInquries
+    } catch(error){
+        console.error('Error getting all inquiries')
+    }
+}
+const getCreatorsInquiries = async (creator) => {
+    try{
+        const { rows: creatorsInquiries } = await client.query(`
+            Select *
+            FROM inquiries
+            WHERE creator = $1
+            ;
+        `, [creator])
+        return creatorsInquiries
+    } catch(error){
+        console.error('Error getting a certain creators inquiries')
+    }
 }
 module.exports = {
     createInquiry
